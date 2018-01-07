@@ -13,5 +13,5 @@ stack build
 Runnung
 -------------------
 ```
-stack exec Hetris-exec
+stack exec Hetris-exe
 ```
