@@ -1,4 +1,4 @@
-module Engine
+module BoardRenderer
   ( render
   ) where
 
