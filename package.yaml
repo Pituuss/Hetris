@@ -1,6 +1,6 @@
 name:                Hetris
 version:             0.1.0.0
-github:              "githubuser/Hetris"
+github:              "https://github.com/Pituuss/Hetris"
 license:             BSD3
 author:              "Piotr Wojtyś & Majciej Micek"
 #maintainer:          "example@example.com"
@@ -22,7 +22,7 @@ description:         Please see the README on Github at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 
-library:
+rary:
   source-dirs: src
 
 executables:
