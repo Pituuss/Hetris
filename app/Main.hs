@@ -14,13 +14,14 @@ background = black
 
 -- state = initialGameState
 main :: IO ()
-main = simulate window white 5 initialGameState render simpleFalling
+main = simulate window white 5 initialGameState renderTMPFoo simpleFalling
 
 renderTMPFoo :: State -> Picture
-renderTMPFoo state =
-  renderBoard $ renderBlock (block state) (blockPos state) emptyBoard
-  -- pictures
-    -- [ renderWall
-    -- , uncurry translate (toScreenCoords (blockPos state)) $
-    --   color cyan $ rectangleSolid (0.9 * 32) (0.9 * 32)
-    -- ]
+renderTMPFoo state
+  -- renderBoard $ renderBlock (block state) (blockPos state) emptyBoard
+ =
+  pictures
+    [ renderWall
+    , uncurry translate (toScreenCoords (blockPos state)) $
+      color cyan $ rectangleSolid (0.9 * 32) (0.9 * 32)
+    ]

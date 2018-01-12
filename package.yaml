@@ -21,9 +21,10 @@ description:         Please see the README on Github at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- gloss
 
-rary:
-  source-dirs: src
+library:
+    source-dirs: src
 
 executables:
   Hetris-exe:
@@ -42,7 +43,7 @@ tests:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
-    - -threaded
+#    - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
