@@ -12,7 +12,4 @@ moveBlock :: Float -> State -> State
 moveBlock seconds state = state {blockPos = (x, y')}
   where
     (x, y) = blockPos state
-    y'
-      -- if seconds == 1
-     = y + 1
-        -- else y
+    y' = y + 1

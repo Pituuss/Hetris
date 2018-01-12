@@ -55,7 +55,7 @@ renderCell (x, y) col = translate x' y' $ color col $ rectangleSolid size' size'
     size' = cellSize * 0.8
 
 renderBoard :: Board -> Picture
-renderBoard board = pictures (map cellToPic (cellsCoords board))
+renderBoard board = pictures $ map cellToPic $ cellsCoords board
   where
     cellToPic (x, y, cell)
       | y < 1 = pictures []
