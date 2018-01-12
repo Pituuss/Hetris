@@ -1,8 +1,12 @@
 module GameBoard
-  ( cellColor -- :: Cell -> Color
+  ( cellColor
+  , Board(..)
+  , Cell(..)
+  , emptyRow
+  , emptyBoard
   ) where
 
-import Block
+import Blocks
 import Graphics.Gloss
 
 data Cell
@@ -10,20 +14,31 @@ data Cell
   | FilledWith Color
   deriving (Show, Eq)
 
-cellColor :: Cell -> Color
-cell Empty = black
-cell (FilledWith color) = color
-
 data Row =
   RowOfCells [Cell]
   deriving (Show)
-
-empytRow :: Row
-emptyRow = RowOfCells (replicate 10 Empty)
 
 data Board =
   BoardOfRows [Row]
   deriving (Show)
 
+numberRows :: Board -> [(Int, Row)]
+numberRows (BoardOfRows rows) = zip [1 .. 22] rows
+
+numberCells :: Row -> [(Int, Cell)]
+numberCells (RowOfCells cells) = zip [1 .. 10] cells
+
+cell Empty = black
+cell (FilledWith color) = color
+
+cellColor :: Cell -> Color
+cellColor Empty = black
+cellColor (FilledWith color) = color
+
+emptyRow :: Row
+emptyRow = RowOfCells (replicate 10 Empty)
+
 emptyBoard :: Board
-emptyBoard = BoardOfRows (replicate 22)
+emptyBoard = BoardOfRows (replicate 22 (RowOfCells []))
+-- drawBlock :: Block -> (Int, Int) -> Board -> Board
+-- drawBlock

@@ -1,11 +1,13 @@
 module Blocks
-  ( Block
+  ( Block(..)
+  , getBlock
   ) where
 
 import Graphics.Gloss
 
-data Block = BlockCoords
-  { x :: Float
-  , y :: Float
-  , color :: Color
-  } deriving (Show)
+data Block =
+  BlockCoords [(Int, Int)]
+              Color
+  deriving (Show)
+
+getBlock = BlockCoords [(0, 0)] (light blue)

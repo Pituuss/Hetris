@@ -1,14 +1,24 @@
 module State
   ( initialGameState
-  , resetGameState
+  , State(..)
   ) where
 
-import GameBaord
+import Blocks
+import GameBoard
 
 data State = State
   { score :: Integer
   , gameBoard :: Board
   , block :: Block
-  , blockPos :: Block
+  , blockPos :: (Float, Float)
   , accelerate :: Bool
   } deriving (Show)
+
+initialGameState =
+  State
+  { score = 0
+  , gameBoard = emptyBoard
+  , block = getBlock
+  , blockPos = (0, 0)
+  , accelerate = True
+  }
