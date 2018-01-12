@@ -21,16 +21,15 @@ data Row =
   RowOfCells [Cell]
   deriving (Show)
 
-data Board
-  = BoardOfRows [Row]
-  | EmptyBoard
+data Board =
+  BoardOfRows [Row]
   deriving (Show)
 
 numberRows :: Board -> [(Float, Row)]
-numberRows (BoardOfRows rows) = zip [1 .. 22] rows
+numberRows (BoardOfRows rows) = zip [0 .. 21] rows
 
 numberCells :: Row -> [(Float, Cell)]
-numberCells (RowOfCells cells) = zip [1 .. 10] cells
+numberCells (RowOfCells cells) = zip [0 .. 9] cells
 
 cell Empty = black
 cell (FilledWith color) = color
@@ -43,4 +42,4 @@ emptyRow :: Row
 emptyRow = RowOfCells (replicate 10 Empty)
 
 emptyBoard :: Board
-emptyBoard = BoardOfRows (replicate 22 (RowOfCells []))
+emptyBoard = BoardOfRows (replicate 22 emptyRow)
