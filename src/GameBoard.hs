@@ -21,8 +21,9 @@ data Row =
   RowOfCells [Cell]
   deriving (Show)
 
-data Board =
-  BoardOfRows [Row]
+data Board
+  = BoardOfRows [Row]
+  | EmptyBoard
   deriving (Show)
 
 numberRows :: Board -> [(Float, Row)]

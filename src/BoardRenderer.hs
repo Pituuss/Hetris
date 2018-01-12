@@ -1,6 +1,9 @@
 module BoardRenderer
   ( renderWall
   , toScreenCoords
+  , render
+  , renderBoard
+  , renderBlock
   ) where
 
 import Blocks
@@ -56,3 +59,23 @@ renderBoard board = pictures (map cellToPic (cellsCoords board))
       | y < 3 = pictures []
       | cell == Empty = pictures []
       | otherwise = renderCell (x, y) (cellColor cell)
+
+renderBlock :: Block -> (Float, Float) -> Board -> Board
+renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
+  where
+    renderRow (yP, row) = RowOfCells $ map renderCell (numberCells row)
+        -- renderCell (xP, cell)
+          -- | cell /= Empty = cell
+          -- | blockHasCoord (x - xP, y - yP) block
+         -- = FilledWith (blockColor block)
+          -- | otherwise = Empty
+      where
+
+
+render :: State -> Picture
+render state = pictures [walls, currentBoard, activeBlock]
+  where
+    walls = renderWall
+    currentBoard = pictures [renderBoard $ gameBoard state]
+    activeBlock =
+      renderBoard $ renderBlock (block state) (blockPos state) emptyBoard
