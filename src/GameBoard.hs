@@ -1,6 +1,9 @@
 module GameBoard
   ( cellColor
+  , numberRows
+  , numberCells
   , Board(..)
+  , Row(..)
   , Cell(..)
   , emptyRow
   , emptyBoard
@@ -22,10 +25,10 @@ data Board =
   BoardOfRows [Row]
   deriving (Show)
 
-numberRows :: Board -> [(Int, Row)]
+numberRows :: Board -> [(Float, Row)]
 numberRows (BoardOfRows rows) = zip [1 .. 22] rows
 
-numberCells :: Row -> [(Int, Cell)]
+numberCells :: Row -> [(Float, Cell)]
 numberCells (RowOfCells cells) = zip [1 .. 10] cells
 
 cell Empty = black
@@ -40,5 +43,3 @@ emptyRow = RowOfCells (replicate 10 Empty)
 
 emptyBoard :: Board
 emptyBoard = BoardOfRows (replicate 22 (RowOfCells []))
--- drawBlock :: Block -> (Int, Int) -> Board -> Board
--- drawBlock

@@ -6,7 +6,7 @@ module Blocks
 import Graphics.Gloss
 
 data Block =
-  BlockCoords [(Int, Int)]
+  BlockCoords [(Float, Float)]
               Color
   deriving (Show)
 

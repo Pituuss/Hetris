@@ -33,5 +33,26 @@ renderWall =
       rectangleSolid (boardWidth + padding) (boardHeight + padding)
     , color boardColor $ rectangleSolid boardWidth boardHeight
     ]
--- renderBoard ::Board -> Picture
--- renderBoard board = pictures (map cellToPic (cellCoord board))
+
+cellsCoords :: Board -> [(Float, Float, Cell)]
+cellsCoords board = concatMap extractCells (numberRows board)
+  where
+    extractCells :: (Float, Row) -> [(Float, Float, Cell)]
+    extractCells (y, row) = map extractCell (numberCells row)
+      where
+        extractCell (x, c) = (x, y, c)
+
+renderCell :: (Float, Float) -> Color -> Picture
+renderCell (x, y) col = translate x' y' $ color col $ rectangleSolid size' size'
+  where
+    x' = fst $ toScreenCoords (x, y)
+    y' = snd $ toScreenCoords (x, y)
+    size' = cellSize * 0.8
+
+renderBoard :: Board -> Picture
+renderBoard board = pictures (map cellToPic (cellsCoords board))
+  where
+    cellToPic (x, y, cell)
+      | y < 3 = pictures []
+      | cell == Empty = pictures []
+      | otherwise = renderCell (x, y) (cellColor cell)
