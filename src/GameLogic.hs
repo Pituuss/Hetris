@@ -9,8 +9,8 @@ import Blocks
 import BoardRenderer
 import GameBoard
 
-simpleFalling :: ViewPort -> Float -> State -> State
-simpleFalling _ = moveBlock
+simpleFalling :: Float -> State -> State   --ViewPort ->
+simpleFalling = moveBlock
 
 moveBlock :: Float -> State -> State
 moveBlock seconds state = if (isNotColision state{blockPos = (x,y-1)}) then state {blockPos = (x, y')} else loadNewState state
