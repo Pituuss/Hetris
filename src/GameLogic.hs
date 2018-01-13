@@ -13,7 +13,9 @@ simpleFalling :: Float -> State -> State   --ViewPort ->
 simpleFalling = moveBlock
 
 moveBlock :: Float -> State -> State
-moveBlock seconds state = if (isNotColision state{blockPos = (x,y-1)}) then state {blockPos = (x, y')} else loadNewState state
+moveBlock seconds state = --if (isNotColision state{blockPos = (x,y-1)}) then 
+  state {blockPos = (x, y')} 
+  --else loadNewState state
   where
     (x, y) = blockPos state
     y' = y + 1
@@ -26,7 +28,7 @@ bottomWallColision :: [(Float,Float)] -> Bool
 bottomWallColision [] = False
 bottomWallColision (x:xs) = result || bottomWallColision xs
     where
-      result = if (\(a,b) -> b) x > 8 then True else False
+      result = if (\(a,b) -> b) x > 22 then True else False
 
 loadNewState :: State -> State
 loadNewState state =
