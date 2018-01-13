@@ -12,15 +12,13 @@ data State = State
   , block :: Block
   , blockPos :: (Float, Float)
   , accelerate :: Bool
-  , blockNumber :: Int
   } deriving (Show)
 
 initialGameState =
   State
   { score = 0
   , gameBoard = emptyBoard
+  , block = getBlock
   , blockPos = (8, 0)
   , accelerate = True
-  , blockNumber = 0
-  , block = getBlock
   } 

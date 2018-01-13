@@ -7,7 +7,6 @@ module GameBoard
   , Cell(..)
   , emptyRow
   , emptyBoard
-
   ) where
 
 import Blocks
@@ -44,4 +43,3 @@ emptyRow = RowOfCells (replicate 10 Empty)
 
 emptyBoard :: Board
 emptyBoard = BoardOfRows (replicate 22 emptyRow)
-
