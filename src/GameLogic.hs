@@ -2,6 +2,7 @@ module GameLogic
   ( simpleFalling
     ,blockCoordList
     ,mapColision
+    ,isNotColision
   ) where
 
 import Blocks
