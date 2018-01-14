@@ -74,10 +74,9 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
           | otherwise = Empty
 
 render :: State -> Picture
-render state = pictures [walls, currentBoard, activeBlock, tmpblock]
+render state = pictures [walls, currentBoard, activeBlock]
   where
     walls = renderWall
     currentBoard = renderBoard $ gameBoard state
     activeBlock =
       renderBoard $ renderBlock (block state) (blockPos state) (gameBoard state)
-    tmpblock = renderBoard $ renderBlock getBlock (9, 10) emptyBoard
