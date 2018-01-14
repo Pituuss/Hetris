@@ -15,7 +15,7 @@ data Block =
   deriving (Show)
 
 getBlock :: Block
-getBlock = BlockCoords [(0, 0), (0, 1), (0, 2), (1, 1)] (light blue)
+getBlock = BlockCoords [(0, 0), (0, 1), (0, 2),(-1,1)] (light blue)
 
 blockColor :: Block -> Color
 blockColor (BlockCoords _ color) = color

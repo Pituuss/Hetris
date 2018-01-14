@@ -19,7 +19,7 @@ initialGameState =
   State
   { score = 0
   , gameBoard = emptyBoard
-  , blockPos = (0, 0)
+  , blockPos = (5, 0)
   , accelerate = True
   , blockNumber = 0
   , block = getBlock

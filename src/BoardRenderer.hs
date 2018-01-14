@@ -70,7 +70,7 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
       where
         renderCellsInRows (xP, cell)
           | cell /= Empty = cell
-          | blockHasCoord (x - xP, y - yP) block = FilledWith (blockColor block)
+          | blockHasCoord (xP - x,yP - y) block = FilledWith (blockColor block)
           | otherwise = Empty
 
 render :: State -> Picture
