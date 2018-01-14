@@ -17,7 +17,7 @@ cellSize = 32
 
 wallColor = dark red
 
-boardWidth = 11 * cellSize
+boardWidth = 10 * cellSize
 
 boardHeight = 21 * cellSize
 
@@ -34,9 +34,10 @@ toScreenCoords (x1, y1) = (x2, y2)
 renderWall :: Picture
 renderWall =
   pictures
-    [ color wallColor $
+    [ translate (-cellSize / 2) 0 $color wallColor $
       rectangleSolid (boardWidth + padding) (boardHeight + padding)
-    , color boardColor $ rectangleSolid boardWidth boardHeight
+    , translate (-cellSize / 2) 0 $
+      color boardColor $ rectangleSolid boardWidth boardHeight
     ]
 
 cellsCoords :: Board -> [(Float, Float, Cell)]
@@ -73,9 +74,10 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
           | otherwise = Empty
 
 render :: State -> Picture
-render state = pictures [walls, currentBoard, activeBlock]
+render state = pictures [walls, currentBoard, activeBlock, tmpblock]
   where
     walls = renderWall
-    currentBoard = pictures [renderBoard $ gameBoard state]
+    currentBoard = renderBoard $ gameBoard state
     activeBlock =
       renderBoard $ renderBlock (block state) (blockPos state) (gameBoard state)
+    tmpblock = renderBoard $ renderBlock getBlock (9, 10) emptyBoard
