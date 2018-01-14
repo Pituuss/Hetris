@@ -15,10 +15,33 @@ import State
 simpleFalling :: Float -> State -> State 
 simpleFalling = moveBlock
 
+
+
+
+
 removeFullRows :: State -> State
-removeFullRows state = state --checkRows (numberRows (gameBoard state))
+removeFullRows state =  checkBoard (numberRows (gameBoard state)) state
  
---checkRows :: [(Float, Row)] -> Bool
+checkBoard :: [(Float, Row)] -> State -> State
+checkBoard [] state = state
+checkBoard (x:xs) state = if isRowFull (numberCells (snd x)) 
+  then removeFullRows (state {gameBoard = rowsToBoard (removeRow (numberRows (gameBoard state)) emptyRow (fst x))})  --od ilu ma zmieni
+  else checkBoard xs state
+
+removeRow :: [(Float, Row)] -> Row -> Float -> [(Float, Row)]
+removeRow [] _ _ = []
+removeRow (x:xs) lastRow fullrow = if fst x > fullrow then x:xs
+  else if fst x == 0 then [(0,emptyRow)] ++ removeRow xs (snd x) fullrow
+    else  [((fst x),lastRow)] ++ removeRow xs (snd x) fullrow
+    
+
+isRowFull :: [(Float, Cell)] -> Bool
+isRowFull [] = True
+isRowFull (x:xs) = if cellColor (snd x) == black 
+  then False else isRowFull xs
+
+
+
 
 moveBlock :: Float -> State -> State
 moveBlock seconds state =
