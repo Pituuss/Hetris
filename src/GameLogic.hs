@@ -61,7 +61,7 @@ bottomWallColision [] = False
 bottomWallColision (x:xs) = result || bottomWallColision xs
   where
     result =
-      if snd x > 13                   --zmienic na 22
+      if snd x > 21                
         then True
         else False
 

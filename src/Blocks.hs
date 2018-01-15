@@ -5,6 +5,7 @@ module Blocks
   , getBlock
   , blockList
   , newBlock
+  , rotateBlock
   ) where
 
 import Graphics.Gloss
@@ -42,9 +43,16 @@ newBlock number =
     then getBlock
   else 
     BlockCoords [(0, 0), (0, 1), (0, 2),(-1,1)] (light blue)
-
     where 
       numb = myMod number 6
 
 myMod :: Float -> Float -> Float
 myMod x y = if x < y then x else myMod (x-y) y
+
+rotateBlock :: [(Float,Float)] -> Block
+rotateBlock x = BlockCoords (rotateB x (head x)) (light blue)
+
+rotateB :: [(Float,Float)] -> (Float,Float) -> [(Float,Float)]
+rotateB [] _ = []
+rotateB (x:xs) first = if x == first then [x] ++ rotateB xs first
+  else [(-(snd x),fst x)] ++ rotateB xs first

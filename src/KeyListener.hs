@@ -25,7 +25,8 @@ handleKeys (EventKey (Char 'd') pos _ _) state =
 handleKeys (EventKey (Char 's') pos _ _) state = if pos == Down 
   then moveDown state else state
 handleKeys (EventKey (Char 'w') pos _ _) state = if pos == Down 
-  then changeRotation state else state
+  && canUpdate (changeRotation state)
+    then changeRotation state else state
 handleKeys _ state = state
 
 canUpdate :: State -> Bool
@@ -49,4 +50,4 @@ countMovingDown state n = if isNotColision (state {blockPos = (x,y + n)})
       (x,y) = blockPos state
 
 changeRotation :: State -> State
-changeRotation state = state
+changeRotation state = state {block = rotateBlock (blockList (block state))}
