@@ -12,7 +12,7 @@ data State = State
   , block :: Block
   , blockPos :: (Float, Float)
   , accelerate :: Bool
-  , blockNumber :: Int
+  , randSeed :: Float
   } deriving (Show)
 
 initialGameState =
@@ -21,6 +21,6 @@ initialGameState =
   , gameBoard = emptyBoard
   , blockPos = (5, 0)
   , accelerate = True
-  , blockNumber = 0
   , block = getBlock
+  , randSeed = 0
   }

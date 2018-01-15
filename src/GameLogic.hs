@@ -15,39 +15,34 @@ import State
 simpleFalling :: Float -> State -> State 
 simpleFalling = moveBlock
 
-
-
-
-
 removeFullRows :: State -> State
 removeFullRows state =  checkBoard (numberRows (gameBoard state)) state
  
 checkBoard :: [(Float, Row)] -> State -> State
 checkBoard [] state = state
 checkBoard (x:xs) state = if isRowFull (numberCells (snd x)) 
-  then removeFullRows (state {gameBoard = rowsToBoard (removeRow (numberRows (gameBoard state)) emptyRow (fst x))})  --od ilu ma zmieni
+  then removeFullRows (state {  score = score'  
+                              , gameBoard = rowsToBoard (removeRow (numberRows (gameBoard state)) emptyRow (fst x))})  --od ilu ma zmieni
   else checkBoard xs state
+    where
+      score' = (score state) + 1
 
 removeRow :: [(Float, Row)] -> Row -> Float -> [(Float, Row)]
 removeRow [] _ _ = []
 removeRow (x:xs) lastRow fullrow = if fst x > fullrow then x:xs
   else if fst x == 0 then [(0,emptyRow)] ++ removeRow xs (snd x) fullrow
     else  [((fst x),lastRow)] ++ removeRow xs (snd x) fullrow
-    
 
 isRowFull :: [(Float, Cell)] -> Bool
 isRowFull [] = True
 isRowFull (x:xs) = if cellColor (snd x) == black 
   then False else isRowFull xs
 
-
-
-
 moveBlock :: Float -> State -> State
 moveBlock seconds state =
   if isNotColision state {blockPos = (x, y + 1)}
-    then  state {blockPos = (x, y')}
-    else  removeFullRows (loadNewState state)
+    then  state {blockPos = (x, y'), randSeed = (randSeed state) + 1}
+    else  randomNewBlock (removeFullRows (loadNewState state))
   where
     (x, y) = blockPos state
     y' = y + 1
@@ -103,7 +98,11 @@ colision yx x =
         else True
 
 
-
+randomNewBlock :: State -> State
+randomNewBlock state = state {block = newBlock x}
+   where
+    x = randSeed state
+        
 blockCoordList :: State -> [(Float, Float)]
 blockCoordList state = listConvert (blockList (block state)) state
 

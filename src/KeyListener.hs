@@ -10,20 +10,22 @@ import Blocks
 handleKeys :: Event -> State -> State
 handleKeys (EventKey (Char 'a') pos _ _) state =
   if canUpdate (state {blockPos = (x - 1, y)}) && pos == Down
-    then state {blockPos = (x', y)}
+    then state {blockPos = (x', y),randSeed = (randSeed state) + 1}
     else state
   where
     (x, y) = blockPos state
     x' = x - 1
 handleKeys (EventKey (Char 'd') pos _ _) state =
   if canUpdate (state {blockPos = (x + 1, y)}) && pos == Down
-    then state {blockPos = (x', y)}
+    then state {blockPos = (x', y),randSeed = (randSeed state) + 1}
     else state
   where
     (x, y) = blockPos state
     x' = x + 1
 handleKeys (EventKey (Char 's') pos _ _) state = if pos == Down 
   then moveDown state else state
+handleKeys (EventKey (Char 'w') pos _ _) state = if pos == Down 
+  then changeRotation state else state
 handleKeys _ state = state
 
 canUpdate :: State -> Bool
@@ -45,3 +47,6 @@ countMovingDown state n = if isNotColision (state {blockPos = (x,y + n)})
   then countMovingDown state (n + 1) else n - 1
     where 
       (x,y) = blockPos state
+
+changeRotation :: State -> State
+changeRotation state = state
