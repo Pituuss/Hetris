@@ -68,7 +68,7 @@ bottomWallColision (x:xs) = result || bottomWallColision xs
 loadNewState :: State -> State
 loadNewState state =
   state
-  { blockPos = (7, 0)
+  { blockPos = (4, 0)
   , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
   }
 
