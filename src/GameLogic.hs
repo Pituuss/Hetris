@@ -60,13 +60,14 @@ removeRow (x:xs) lastRow fullrow
   | otherwise = (fst x, lastRow) : removeRow xs (snd x) fullrow
 
 isRowFull :: [(Float, Cell)] -> Bool
-isRowFull = foldr (\x -> (&&) (cellColor (snd x) /= black)) True
+isRowFull [] = True
+isRowFull (x:xs) = (cellColor (snd x) /= black) && isRowFull xs
 
 moveBlock :: State -> State
 moveBlock state =
   if isNotColision state {blockPos = (x, y + 1)}
     then state {blockPos = (x, y')}
-    else loadNewState state
+    else removeFullRows $ loadNewState state
   where
     (x, y) = blockPos state
     y' = y + 1

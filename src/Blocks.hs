@@ -29,7 +29,7 @@ newBlock r =
   case (truncate (r * 1000)) `mod` 6 of
     0 -> BlockCoords [(0, 0), (0, 1), (-1, 0), (-1, 1)] (light blue)
     1 -> BlockCoords [(0, 0), (1, 0), (0, 1), (0, -1)] (light yellow)
-    2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] (light orange)
+    2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] orange
     3 -> BlockCoords [(0, 0), (1, 0), (0, -1), (-1, -1)] (light green)
     4 -> BlockCoords [(0, 0), (0, 1), (1, 0), (-1, 0)] (light red)
     5 -> BlockCoords [(0, 0), (0, -1), (0, -1), (1, -1)] (light cyan)
