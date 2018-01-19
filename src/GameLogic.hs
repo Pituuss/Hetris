@@ -11,6 +11,7 @@ import GameBoard
 import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort
 import State
+import System.Random
 
 blockVel :: Float
 blockVel = 5
@@ -64,8 +65,8 @@ isRowFull = foldr (\x -> (&&) (cellColor (snd x) /= black)) True
 moveBlock :: State -> State
 moveBlock state =
   if isNotColision state {blockPos = (x, y + 1)}
-    then state {blockPos = (x, y'), randSeed = randSeed state + 1}
-    else randomNewBlock (removeFullRows (loadNewState state))
+    then state {blockPos = (x, y')}
+    else loadNewState state
   where
     (x, y) = blockPos state
     y' = y + 1
@@ -88,7 +89,11 @@ loadNewState state =
   state
   { blockPos = (4, 0)
   , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
+  , block = newBlock $ fst newSeed
+  , randSeed = snd newSeed
   }
+  where
+    newSeed = randomR (0.0, 1.0) (randSeed state)
 
 mapColision :: State -> [(Float, Float)] -> Bool
 mapColision state [] = False
@@ -110,9 +115,8 @@ colision yx x =
     then cellColor (snd (head x)) /= black
     else colision yx (tail x)
 
-randomNewBlock :: State -> State
-randomNewBlock state = state {block = newBlock $ randSeed state}
-
+-- randomNewBlock :: State -> State
+-- randomNewBlock state = state {block = newBlock $ randSeed state}
 blockCoordList :: State -> [(Float, Float)]
 blockCoordList state = listConvert (blockCords $ block state) state
 

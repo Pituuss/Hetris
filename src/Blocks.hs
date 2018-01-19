@@ -24,16 +24,15 @@ blockCords (BlockCoords cor _) = cor
 blockHasCoord :: (Float, Float) -> Block -> Bool
 blockHasCoord coords (BlockCoords coords' _) = coords `elem` coords'
 
-newBlock :: Float -> Block
-newBlock number
-  | numb == 0 = BlockCoords [(0, 0), (0, 1), (1, 0), (1, 1)] (light blue)
-  | numb == 1 = BlockCoords [(0, 0), (0, 1), (1, 1), (1, 2)] (light yellow)
-  | numb == 2 = BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] (light orange)
-  | numb == 3 = BlockCoords [(0, 0), (0, 1), (0, 2), (1, 2)] (light green)
-  | numb == 4 = BlockCoords [(0, 0), (0, 1), (0, 2), (1, 1)] (light red)
-  | otherwise = BlockCoords [(0, 0), (0, 1), (0, 2), (-1, 1)] (light cyan)
-  where
-    numb = myMod number 6
+newBlock :: Double -> Block
+newBlock r =
+  case (truncate (r * 1000)) `mod` 6 of
+    0 -> BlockCoords [(0, 0), (0, 1), (-1, 0), (-1, 1)] (light blue)
+    1 -> BlockCoords [(0, 0), (1, 0), (0, 1), (0, -1)] (light yellow)
+    2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] (light orange)
+    3 -> BlockCoords [(0, 0), (1, 0), (0, -1), (-1, -1)] (light green)
+    4 -> BlockCoords [(0, 0), (0, 1), (1, 0), (-1, 0)] (light red)
+    5 -> BlockCoords [(0, 0), (0, -1), (0, -1), (1, -1)] (light cyan)
 
 -- co to robi ??
 myMod :: Float -> Float -> Float

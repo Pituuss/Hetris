@@ -6,18 +6,19 @@ import Blocks
 import GameLogic
 import Graphics.Gloss.Interface.Pure.Game
 import State
+import System.Random
 
 handleKeys :: Event -> State -> State
 handleKeys (EventKey (SpecialKey KeyLeft) pos _ _) state =
   if canUpdate (state {blockPos = (x - 1, y)}) && pos == Down
-    then state {blockPos = (x', y), randSeed = randSeed state + 1}
+    then state {blockPos = (x', y)}
     else state
   where
     (x, y) = blockPos state
     x' = x - 1
 handleKeys (EventKey (SpecialKey KeyRight) pos _ _) state =
   if canUpdate (state {blockPos = (x + 1, y)}) && pos == Down
-    then state {blockPos = (x', y), randSeed = randSeed state + 1}
+    then state {blockPos = (x', y)}
     else state
   where
     (x, y) = blockPos state
