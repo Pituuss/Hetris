@@ -32,12 +32,11 @@ numberRows (BoardOfRows rows) = zip [0 .. 21] rows
 numberCells :: Row -> [(Float, Cell)]
 numberCells (RowOfCells cells) = zip [0 .. 9] cells
 
-rowsToBoard :: [(Float,Row)] -> Board
+rowsToBoard :: [(Float, Row)] -> Board
 rowsToBoard x = BoardOfRows (unZip x)
 
-unZip :: [(Float,Row)] -> [Row]
-unZip [] = []
-unZip (x:xs) = [snd x] ++ (unZip xs)  
+unZip :: [(Float, Row)] -> [Row]
+unZip = foldr (\x -> (++) [snd x]) []
 
 cell Empty = black
 cell (FilledWith color) = color

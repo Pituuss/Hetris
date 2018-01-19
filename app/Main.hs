@@ -15,6 +15,6 @@ background :: Color
 background = black
 
 main :: IO ()
-main = play window white 1 initialGameState render handleKeys simpleFalling
+main = play window white 60 initialGameState render handleKeys updateGameState
 
 renderTMPFoo state = renderBoard emptyBoard

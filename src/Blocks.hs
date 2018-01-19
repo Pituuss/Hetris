@@ -2,10 +2,10 @@ module Blocks
   ( Block(..)
   , blockHasCoord
   , blockColor
-  , getBlock
-  , blockList
+  , rotateBlockCW
+  , rotateBlockCCW
   , newBlock
-  , rotateBlock
+  , blockCords
   ) where
 
 import Graphics.Gloss
@@ -15,44 +15,39 @@ data Block =
               Color
   deriving (Show)
 
-getBlock :: Block
-getBlock = BlockCoords [(0, 0),(1,0)] (light blue)
-
 blockColor :: Block -> Color
 blockColor (BlockCoords _ color) = color
+
+blockCords :: Block -> [(Float, Float)]
+blockCords (BlockCoords cor _) = cor
 
 blockHasCoord :: (Float, Float) -> Block -> Bool
 blockHasCoord coords (BlockCoords coords' _) = coords `elem` coords'
 
-blockList :: Block -> [(Float, Float)]
-blockList (BlockCoords x _) = x
-
 newBlock :: Float -> Block
-newBlock number = 
-  if numb == 0 
-    then BlockCoords [(0, 0), (0, 1), (1, 0), (1, 1)] (light blue)
-  else if numb == 1
-    then BlockCoords [(0, 0), (0, 1), (1, 1),(1,2)] (light blue)
-  else if numb == 2
-    then BlockCoords [(0, 0), (1, 0), (2, 0),(3,0)] (light blue)
-  else if numb == 3
-    then BlockCoords [(0, 0), (0, 1), (0, 2),(1,2)] (light blue)
-  else if numb == 4
-    then BlockCoords [(0, 0), (0, 1), (0, 2),(1,1)] (light blue)
-  else if numb == 5
-    then getBlock
-  else 
-    BlockCoords [(0, 0), (0, 1), (0, 2),(-1,1)] (light blue)
-    where 
-      numb = myMod number 6
+newBlock number
+  | numb == 0 = BlockCoords [(0, 0), (0, 1), (1, 0), (1, 1)] (light blue)
+  | numb == 1 = BlockCoords [(0, 0), (0, 1), (1, 1), (1, 2)] (light yellow)
+  | numb == 2 = BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] (light orange)
+  | numb == 3 = BlockCoords [(0, 0), (0, 1), (0, 2), (1, 2)] (light green)
+  | numb == 4 = BlockCoords [(0, 0), (0, 1), (0, 2), (1, 1)] (light red)
+  | otherwise = BlockCoords [(0, 0), (0, 1), (0, 2), (-1, 1)] (light cyan)
+  where
+    numb = myMod number 6
 
+-- co to robi ??
 myMod :: Float -> Float -> Float
-myMod x y = if x < y then x else myMod (x-y) y
+myMod x y =
+  if x < y
+    then x
+    else myMod (x - y) y
 
-rotateBlock :: [(Float,Float)] -> Block
-rotateBlock x = BlockCoords (rotateB x (head x)) (light blue)
+rotateBlockCW :: Block -> Block
+rotateBlockCW (BlockCoords cords col) = BlockCoords (map rotateCW cords) col
+  where
+    rotateCW (a, b) = (-b, a)
 
-rotateB :: [(Float,Float)] -> (Float,Float) -> [(Float,Float)]
-rotateB [] _ = []
-rotateB (x:xs) first = if x == first then [x] ++ rotateB xs first
-  else [(-(snd x),fst x)] ++ rotateB xs first
+rotateBlockCCW :: Block -> Block
+rotateBlockCCW (BlockCoords cords col) = BlockCoords (map rotateCW cords) col
+  where
+    rotateCW (a, b) = (b, -a)

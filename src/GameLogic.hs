@@ -1,8 +1,8 @@
 module GameLogic
-  ( simpleFalling
-    ,blockCoordList
-    ,mapColision
-    ,isNotColision
+  ( updateGameState
+  , blockCoordList
+  , mapColision
+  , isNotColision
   ) where
 
 import Blocks
@@ -12,58 +12,76 @@ import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort
 import State
 
-simpleFalling :: Float -> State -> State 
-simpleFalling = moveBlock
+blockVel :: Float
+blockVel = 5
+
+accBlockVel :: Float
+accBlockVel = 30
+
+blockMovTime :: State -> Float
+blockMovTime state = 1.0 / blockVel
+
+updateGameState :: Float -> State -> State
+updateGameState tm state = updater state {time = time state + tm, dTime = tm}
+
+updater :: State -> State
+updater state
+  | timeToNextMove (updateClock state) <= 0 =
+    moveBlock (updateClock state) {timeToNextMove = blockMovTime state}
+  | otherwise = state {timeToNextMove = timeToNextMove state - dTime state}
+  where
+    updateClock state =
+      state {timeToNextMove = timeToNextMove state - dTime state}
 
 removeFullRows :: State -> State
-removeFullRows state =  checkBoard (numberRows (gameBoard state)) state
- 
+removeFullRows state = checkBoard (numberRows (gameBoard state)) state
+
 checkBoard :: [(Float, Row)] -> State -> State
 checkBoard [] state = state
-checkBoard (x:xs) state = if isRowFull (numberCells (snd x)) 
-  then removeFullRows (state {  score = score'  
-                              , gameBoard = rowsToBoard (removeRow (numberRows (gameBoard state)) emptyRow (fst x))})  --od ilu ma zmieni
-  else checkBoard xs state
-    where
-      score' = (score state) + 1
+checkBoard (x:xs) state =
+  if isRowFull (numberCells (snd x))
+    then removeFullRows
+           (state
+            { score = score'
+            , gameBoard =
+                rowsToBoard
+                  (removeRow (numberRows (gameBoard state)) emptyRow (fst x)) --od ilu ma zmieni
+            })
+    else checkBoard xs state
+  where
+    score' = score state + 1
 
 removeRow :: [(Float, Row)] -> Row -> Float -> [(Float, Row)]
 removeRow [] _ _ = []
-removeRow (x:xs) lastRow fullrow = if fst x > fullrow then x:xs
-  else if fst x == 0 then [(0,emptyRow)] ++ removeRow xs (snd x) fullrow
-    else  [((fst x),lastRow)] ++ removeRow xs (snd x) fullrow
+removeRow (x:xs) lastRow fullrow
+  | fst x > fullrow = x : xs
+  | fst x == 0 = (0, emptyRow) : removeRow xs (snd x) fullrow
+  | otherwise = (fst x, lastRow) : removeRow xs (snd x) fullrow
 
 isRowFull :: [(Float, Cell)] -> Bool
-isRowFull [] = True
-isRowFull (x:xs) = if cellColor (snd x) == black 
-  then False else isRowFull xs
+isRowFull = foldr (\x -> (&&) (cellColor (snd x) /= black)) True
 
-moveBlock :: Float -> State -> State
-moveBlock seconds state =
+moveBlock :: State -> State
+moveBlock state =
   if isNotColision state {blockPos = (x, y + 1)}
-    then  state {blockPos = (x, y'), randSeed = (randSeed state) + 1}
-    else  randomNewBlock (removeFullRows (loadNewState state))
+    then state {blockPos = (x, y'), randSeed = randSeed state + 1}
+    else randomNewBlock (removeFullRows (loadNewState state))
   where
     (x, y) = blockPos state
     y' = y + 1
 
 isNotColision :: State -> Bool
-isNotColision state =
-  if snd (blockPos state) < 0
-    then True
-    else if bottomWallColision (blockCoordList state) ||
-            mapColision state (blockCoordList state)
-           then False
-           else True
+isNotColision state
+  | snd (blockPos state) < 0 = True
+  | bottomWallColision (blockCoordList state) ||
+      mapColision state (blockCoordList state) = False
+  | otherwise = True
 
 bottomWallColision :: [(Float, Float)] -> Bool
 bottomWallColision [] = False
 bottomWallColision (x:xs) = result || bottomWallColision xs
   where
-    result =
-      if snd x > 21                
-        then True
-        else False
+    result = snd x > 21
 
 loadNewState :: State -> State
 loadNewState state =
@@ -89,27 +107,19 @@ colision :: Float -> [(Float, Cell)] -> Bool
 colision _ [] = False
 colision yx x =
   if yx == fst (head x)
-    then check
+    then cellColor (snd (head x)) /= black
     else colision yx (tail x)
-  where
-    check =
-      if cellColor (snd (head x)) == black
-        then False
-        else True
-
 
 randomNewBlock :: State -> State
-randomNewBlock state = state {block = newBlock x}
-   where
-    x = randSeed state
-        
+randomNewBlock state = state {block = newBlock $ randSeed state}
+
 blockCoordList :: State -> [(Float, Float)]
-blockCoordList state = listConvert (blockList (block state)) state
+blockCoordList state = listConvert (blockCords $ block state) state
 
 listConvert :: [(Float, Float)] -> State -> [(Float, Float)]
 listConvert [] _ = []
 listConvert x state =
-  [convert (head x) (blockPos state)] ++ listConvert (tail x) state
+  convert (head x) (blockPos state) : listConvert (tail x) state
 
 convert :: (Float, Float) -> (Float, Float) -> (Float, Float)
 convert (a1, b1) (a2, b2) = (a1 + a2, b1 + b2)

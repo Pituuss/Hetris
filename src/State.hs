@@ -8,6 +8,9 @@ import GameBoard
 
 data State = State
   { score :: Integer
+  , time :: Float
+  , dTime :: Float
+  , timeToNextMove :: Float
   , gameBoard :: Board
   , block :: Block
   , blockPos :: (Float, Float)
@@ -18,9 +21,12 @@ data State = State
 initialGameState =
   State
   { score = 0
+  , time = 0
+  , dTime = 0
+  , timeToNextMove = 0
   , gameBoard = emptyBoard
   , blockPos = (5, 0)
   , accelerate = True
-  , block = getBlock
+  , block = newBlock $ randSeed initialGameState
   , randSeed = 0
   }
