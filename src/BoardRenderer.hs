@@ -1,10 +1,8 @@
 module BoardRenderer
   ( renderWall
-  , toScreenCoords
   , render
-  , renderBoard
   , renderBlock
-  , renderCell
+  , renderBoard
   , cellsCoords
   ) where
 
@@ -13,24 +11,38 @@ import GameBoard
 import Graphics.Gloss
 import State
 
+-- | cell size
+cellSize :: Float
 cellSize = 32
 
+-- | wall color
+wallColor :: Color
 wallColor = dark red
 
+-- | board width
+boardWidth :: Float
 boardWidth = 10 * cellSize
 
+-- | board height
+boardHeight :: Float
 boardHeight = 21 * cellSize
 
+-- | board padding
+padding :: Float
 padding = 70
 
+-- | board color
+boardColor :: Color
 boardColor = black
 
+-- | converter from board cords to global 'screen' cords
 toScreenCoords :: (Float, Float) -> (Float, Float)
 toScreenCoords (x1, y1) = (x2, y2)
   where
     x2 = x1 * cellSize - 5 * cellSize
     y2 = 11 * cellSize - (y1 * cellSize)
 
+-- | function rendering wall
 renderWall :: Picture
 renderWall =
   pictures
@@ -40,6 +52,7 @@ renderWall =
       color boardColor $ rectangleSolid boardWidth boardHeight
     ]
 
+-- | returning list of the cells with its coordinates
 cellsCoords :: Board -> [(Float, Float, Cell)]
 cellsCoords board = concatMap extractRows (numberRows board)
   where
@@ -48,6 +61,7 @@ cellsCoords board = concatMap extractRows (numberRows board)
       where
         extractCells (x, c) = (x, y, c)
 
+-- | rendering cell literally creating picture for gloss
 renderCell :: (Float, Float) -> Color -> Picture
 renderCell (x, y) col = translate x' y' $ color col $ rectangleSolid size' size'
   where
@@ -55,6 +69,7 @@ renderCell (x, y) col = translate x' y' $ color col $ rectangleSolid size' size'
     y' = snd $ toScreenCoords (x, y)
     size' = cellSize * 0.8
 
+-- | turning board to the picture
 renderBoard :: Board -> Picture
 renderBoard board = pictures $ map cellToPic $ cellsCoords board
   where
@@ -63,6 +78,7 @@ renderBoard board = pictures $ map cellToPic $ cellsCoords board
       | cell == Empty = pictures []
       | otherwise = renderCell (x, y) (cellColor cell)
 
+-- | moving block as temp cell on the board
 renderBlock :: Block -> (Float, Float) -> Board -> Board
 renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
   where
@@ -70,9 +86,10 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
       where
         renderCellsInRows (xP, cell)
           | cell /= Empty = cell
-          | blockHasCoord (xP - x,yP - y) block = FilledWith (blockColor block)
+          | blockHasCoord (xP - x, yP - y) block = FilledWith (blockColor block)
           | otherwise = Empty
 
+-- | turning whole state to the picture
 render :: State -> Picture
 render state = pictures [walls, currentBoard, activeBlock]
   where

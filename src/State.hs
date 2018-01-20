@@ -7,17 +7,19 @@ import Blocks
 import GameBoard
 import System.Random
 
+-- | Data describing current game state
 data State = State
-  { score :: Integer
-  , time :: Float
-  , dTime :: Float
-  , timeToNextMove :: Float
-  , gameBoard :: Board
-  , block :: Block
-  , blockPos :: (Float, Float)
-  , randSeed :: StdGen
+  { score :: Integer -- ^ Current score
+  , time :: Float -- ^ Current time
+  , dTime :: Float -- ^ dTime passed
+  , timeToNextMove :: Float -- ^ current time to the next move
+  , gameBoard :: Board -- ^ current board with cells
+  , block :: Block -- ^ current block we use
+  , blockPos :: (Float, Float) -- ^ current blocks position
+  , randSeed :: StdGen -- ^ random seed 
   } deriving (Show)
 
+-- | initial state of the game
 initialGameState =
   State
   { score = 0

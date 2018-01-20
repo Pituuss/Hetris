@@ -8,7 +8,8 @@ import Graphics.Gloss.Interface.Pure.Game
 import State
 import System.Random
 
-handleKeys :: Event -> State -> State
+-- | simple key handler
+handleKeys :: Event -> State -> State -- | Left key move right
 handleKeys (EventKey (SpecialKey KeyLeft) pos _ _) state =
   if canUpdate (state {blockPos = (x - 1, y)}) && pos == Down
     then state {blockPos = (x', y)}
@@ -16,6 +17,7 @@ handleKeys (EventKey (SpecialKey KeyLeft) pos _ _) state =
   where
     (x, y) = blockPos state
     x' = x - 1
+-- | Right key move right
 handleKeys (EventKey (SpecialKey KeyRight) pos _ _) state =
   if canUpdate (state {blockPos = (x + 1, y)}) && pos == Down
     then state {blockPos = (x', y)}
@@ -23,20 +25,24 @@ handleKeys (EventKey (SpecialKey KeyRight) pos _ _) state =
   where
     (x, y) = blockPos state
     x' = x + 1
+-- | s key force move down
 handleKeys (EventKey (Char 's') pos _ _) state =
   if pos == Down
     then moveDown state
     else state
+-- | a key clockwise rotation
 handleKeys (EventKey (Char 'a') pos _ _) state =
   if pos == Down && canUpdate (changeRotationCW state)
     then changeRotationCW state
     else state
+-- | d key counter clockwise rotation
 handleKeys (EventKey (Char 'd') pos _ _) state =
   if pos == Down && canUpdate (changeRotationCCW state)
     then changeRotationCCW state
     else state
 handleKeys _ state = state
 
+--  | function checking if we can do the update state operation
 canUpdate :: State -> Bool
 canUpdate state =
   (boundColision $ blockCoordList state) &&
@@ -59,8 +65,10 @@ countMovingDown state n =
   where
     (x, y) = blockPos state
 
+-- | clockwise rotation function
 changeRotationCW :: State -> State
 changeRotationCW state = state {block = rotateBlockCW $ block state}
 
+-- | counter clockwise rotation
 changeRotationCCW :: State -> State
 changeRotationCCW state = state {block = rotateBlockCCW $ block state}
