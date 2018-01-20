@@ -1,15 +1,19 @@
+{-|
+Module : BoardRenderer
+|-}
 module BoardRenderer
   ( renderWall
   , render
   , renderBlock
   , renderBoard
   , cellsCoords
+  , toScreenCoords
   ) where
 
-import Blocks
-import GameBoard
-import Graphics.Gloss
-import State
+import           Blocks
+import           GameBoard
+import           Graphics.Gloss
+import           State
 
 -- | cell size
 cellSize :: Float

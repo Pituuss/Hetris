@@ -1,12 +1,14 @@
+{-|
+Module : KeyListener
+|-}
 module KeyListener
   ( handleKeys
   ) where
 
-import Blocks
-import GameLogic
-import Graphics.Gloss.Interface.Pure.Game
-import State
-import System.Random
+import           Blocks
+import           GameLogic
+import           Graphics.Gloss.Interface.Pure.Game
+import           State
 
 -- | simple key handler
 handleKeys :: Event -> State -> State -- | Left key move right

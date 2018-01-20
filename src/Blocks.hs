@@ -1,3 +1,6 @@
+{-|
+Module : Blocks
+|-}
 module Blocks
   ( Block(..)
   , blockHasCoord
@@ -8,7 +11,7 @@ module Blocks
   , blockCords
   ) where
 
-import Graphics.Gloss
+import           Graphics.Gloss
 
 -- | data representing abstract 2D block
 data Block =

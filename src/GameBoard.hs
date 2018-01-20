@@ -1,3 +1,6 @@
+{-|
+Module : GameBoard
+|-}
 module GameBoard
   ( cellColor
   , numberRows
@@ -10,8 +13,8 @@ module GameBoard
   , rowsToBoard
   ) where
 
-import Blocks
-import Graphics.Gloss
+import           Blocks
+import           Graphics.Gloss
 
 data Cell
   = Empty
@@ -44,7 +47,7 @@ unZip = foldr (\x -> (++) [snd x]) []
 
 -- | function returning color of the cell
 cellColor :: Cell -> Color
-cellColor Empty = black
+cellColor Empty              = black
 cellColor (FilledWith color) = color
 
 -- | empty row definition

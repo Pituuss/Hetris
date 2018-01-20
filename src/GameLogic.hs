@@ -1,3 +1,6 @@
+{-|
+Module : GameLogic
+|-}
 module GameLogic
   ( updateGameState
   , blockCoordList
@@ -5,13 +8,13 @@ module GameLogic
   , isNotColision
   ) where
 
-import Blocks
-import BoardRenderer
-import GameBoard
-import Graphics.Gloss
-import Graphics.Gloss.Data.ViewPort
-import State
-import System.Random
+import           Blocks
+import           BoardRenderer
+import           GameBoard
+import           Graphics.Gloss
+import           Graphics.Gloss.Data.ViewPort
+import           State
+import           System.Random
 
 -- | horizontal block speed constant
 blockVel :: Float

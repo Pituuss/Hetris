@@ -38,6 +38,8 @@ executables:
     dependencies:
     - Hetris
     - gloss
+    - HUnit
+    - QuickCheck
 
 tests:
   Hetris-test:
@@ -49,3 +51,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - Hetris
+    - HUnit
+    - QuickCheck
