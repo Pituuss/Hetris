@@ -57,7 +57,7 @@ checkBoard (x:xs) state =
             })
     else checkBoard xs state
   where
-    score' = score state + 1
+    score' = score state + 100
 
 -- | function removing the rows
 removeRow :: [(Float, Row)] -> Row -> Float -> [(Float, Row)]

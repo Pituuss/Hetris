@@ -95,9 +95,13 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
 
 -- | turning whole state to the picture
 render :: State -> Picture
-render state = pictures [walls, currentBoard, activeBlock]
+render state = pictures [walls, currentBoard, activeBlock,playerScore]
   where
     walls = renderWall
     currentBoard = renderBoard $ gameBoard state
     activeBlock =
       renderBoard $ renderBlock (block state) (blockPos state) (gameBoard state)
+    playerScore = translate 200.0 200.0 (scale 0.2 0.2 (pictures [playerScoreText]))
+      where
+        playerScoreText = color white (Text scoreText)
+        scoreText = "SCORE: " ++ show (score state)
