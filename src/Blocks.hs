@@ -34,7 +34,7 @@ blockHasCoord coords (BlockCoords coords' _) = coords `elem` coords'
 -- | getting new random block
 newBlock :: Double -> Block
 newBlock r =
-  case (truncate (r * 1000)) `mod` 6 of
+  case truncate (r * 1000) `mod` 6 of
     0 -> BlockCoords [(0, 0), (0, 1), (-1, 0), (-1, 1)] (light blue)
     1 -> BlockCoords [(0, 0), (1, 0), (0, 1), (0, -1)] (light yellow)
     2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] orange

@@ -47,7 +47,7 @@ handleKeys _ state = state
 --  | function checking if we can do the update state operation
 canUpdate :: State -> Bool
 canUpdate state =
-  (boundColision $ blockCoordList state) &&
+  boundColision (blockCoordList state) &&
   not (mapColision state (blockCoordList state))
 
 boundColision :: [(Float, Float)] -> Bool

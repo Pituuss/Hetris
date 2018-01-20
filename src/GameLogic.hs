@@ -6,13 +6,14 @@ module GameLogic
   , blockCoordList
   , mapColision
   , isNotColision
+  , isRowFull
   ) where
 
 import           Blocks
 import           BoardRenderer
 import           GameBoard
 import           Graphics.Gloss
-import           Graphics.Gloss.Data.ViewPort
+import           Graphics.Gloss.Data.ViewPort ()
 import           State
 import           System.Random
 
