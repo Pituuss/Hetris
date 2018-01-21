@@ -27,7 +27,11 @@ blockMovTime state = 1.0 / blockVel
 
 -- | game state updater
 updateGameState :: Float -> State -> State
-updateGameState tm state = updater state {time = time state + tm, dTime = tm}
+updateGameState tm state = do
+    let start = updater state {time = time state + tm, dTime = tm}
+    if change start == True && isNotColision (start {blockPos = (4,snd (blockPos state) + 1)})
+      then initialGameState  
+    else start {change = False}
 
 -- | simple updating given state
 updater :: State -> State

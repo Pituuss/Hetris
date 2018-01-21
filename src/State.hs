@@ -20,6 +20,7 @@ data State = State
   , block          :: Block -- ^ current block we use
   , blockPos       :: (Float, Float) -- ^ current blocks position
   , randSeed       :: StdGen -- ^ random seed
+  , change         :: Bool
   } deriving (Show)
 
 -- | initial state of the game
@@ -34,4 +35,5 @@ initialGameState =
   , blockPos = (5, 0)
   , block = newBlock 1
   , randSeed = mkStdGen 0
+  , change = True
   }
