@@ -151,3 +151,11 @@ listConvert x state =
 -- | to new position converter
 convert :: (Float, Float) -> (Float, Float) -> (Float, Float)
 convert (a1, b1) (a2, b2) = (a1 + a2, b1 + b2)
+
+isGameOver :: State -> Bool
+isGameOver state = checkFirstRow (numberCells (snd (head ((numberRows (gameBoard state))))))
+
+checkFirstRow :: [(Float,Cell)] -> Bool
+checkFirstRow [] = False
+checkFirstRow (x:xs) = if cellColor (snd x) /= black then True
+  else checkFirstRow xs
