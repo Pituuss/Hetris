@@ -7,6 +7,8 @@ module GameLogic
   , mapColision
   , isNotColision
   , isRowFull
+  , convert
+  , bottomWallColision
   ) where
 
 import           Blocks
@@ -27,11 +29,7 @@ blockMovTime state = 1.0 / blockVel
 
 -- | game state updater
 updateGameState :: Float -> State -> State
-updateGameState tm state = do
-    let start = updater state {time = time state + tm, dTime = tm}
-    if change start == True && isNotColision (start {blockPos = (4,snd (blockPos state) + 1)})
-      then initialGameState  
-    else start {change = False}
+updateGameState tm state = updater state {time = time state + tm, dTime = tm}
 
 -- | simple updating given state
 updater :: State -> State
@@ -102,15 +100,20 @@ bottomWallColision (x:xs) = result || bottomWallColision xs
 
 -- | after collision we need to load new state of the game with new block etc.
 loadNewState :: State -> State
-loadNewState state =
-  state
-  { blockPos = (4, 0)
-  , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
-  , block = newBlock $ fst newSeed
-  , randSeed = snd newSeed
-  }
-  where
-    newSeed = randomR (0.0, 1.0) (randSeed state)
+loadNewState state = do 
+  let start = state
+              { blockPos = (4, 0)
+              , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
+              , block = newBlock $ fst newSeed
+              , randSeed = snd newSeed
+              , change = True
+              }
+               where
+                newSeed = randomR (0.0, 1.0) (randSeed state)
+  if isNotColision (start {blockPos = (fst (blockPos state),snd (blockPos state) + 7)})
+    then initialGameState  
+  else start
+
 
 -- | collisions on the board summary function
 mapColision :: State -> [(Float, Float)] -> Bool

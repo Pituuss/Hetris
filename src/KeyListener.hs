@@ -3,6 +3,7 @@ Module : KeyListener
 |-}
 module KeyListener
   ( handleKeys
+  , boundColision
   ) where
 
 import           Blocks

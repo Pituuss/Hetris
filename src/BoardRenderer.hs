@@ -8,6 +8,7 @@ module BoardRenderer
   , renderBoard
   , cellsCoords
   , toScreenCoords
+  , cellSize
   ) where
 
 import           Blocks
