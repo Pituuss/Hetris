@@ -25,7 +25,9 @@ blockVel = 5
 
 -- | Unity like move time
 blockMovTime :: State -> Float
-blockMovTime state = 1.0 / blockVel
+blockMovTime state
+  | gameOver state = 0
+  | otherwise = 1.0 / blockVel
 
 -- | game state updater
 updateGameState :: Float -> State -> State
@@ -34,12 +36,13 @@ updateGameState tm state = updater state {time = time state + tm, dTime = tm}
 -- | simple updating given state
 updater :: State -> State
 updater state
+  | gameOver state = gameOverState {score = score state, gameBoard = gameBoard state}
   | timeToNextMove (updateClock state) <= 0 =
     moveBlock (updateClock state) {timeToNextMove = blockMovTime state}
   | otherwise = state {timeToNextMove = timeToNextMove state - dTime state}
   where
-    updateClock state =
-      state {timeToNextMove = timeToNextMove state - dTime state}
+    updateClock s =
+      state {timeToNextMove = timeToNextMove state - dTime s}
 
 -- | removing full rows
 removeFullRows :: State -> State
@@ -100,24 +103,23 @@ bottomWallColision (x:xs) = result || bottomWallColision xs
 
 -- | after collision we need to load new state of the game with new block etc.
 loadNewState :: State -> State
-loadNewState state = do 
-  let start = state
-              { blockPos = (4, 0)
-              , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
-              , block = newBlock $ fst newSeed
-              , randSeed = snd newSeed
-              , change = True
-              }
-               where
-                newSeed = randomR (0.0, 1.0) (randSeed state)
-  if isNotColision (start {blockPos = (fst (blockPos state),snd (blockPos state) + 7)})
-    then initialGameState  
-  else start
-
+loadNewState state
+  | isNotColision (startState {blockPos = blockPos state }) = initialGameState --(fst (blockPos state),snd (blockPos state) + 7)
+  | isGameOver state = gameOverState {score = score state, gameBoard = gameBoard state}
+  | otherwise = startState
+    where startState = state
+                { blockPos = (4, 0)
+                , gameBoard = renderBlock (block state) (blockPos state) (gameBoard state)
+                , block = newBlock $ fst newSeed
+                , randSeed = snd newSeed
+                , gameOver = False
+                }
+                  where
+                    newSeed = randomR (0.0, 1.0) (randSeed state)
 
 -- | collisions on the board summary function
 mapColision :: State -> [(Float, Float)] -> Bool
-mapColision state [] = False
+mapColision _ [] = False
 mapColision state x =
   pointColision (head x) (numberRows (gameBoard state)) ||
   mapColision state (tail x)
@@ -152,10 +154,10 @@ listConvert x state =
 convert :: (Float, Float) -> (Float, Float) -> (Float, Float)
 convert (a1, b1) (a2, b2) = (a1 + a2, b1 + b2)
 
+-- | Have you lost ?
 isGameOver :: State -> Bool
-isGameOver state = checkFirstRow (numberCells (snd (head ((numberRows (gameBoard state))))))
+isGameOver state = checkFirstRow (numberCells (snd (head (numberRows (gameBoard state)))))
 
+-- | We must somehow check it
 checkFirstRow :: [(Float,Cell)] -> Bool
-checkFirstRow [] = False
-checkFirstRow (x:xs) = if cellColor (snd x) /= black then True
-  else checkFirstRow xs
+checkFirstRow = foldr (\ x -> (||) (cellColor (snd x) /= black)) False

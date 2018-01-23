@@ -1,8 +1,8 @@
 import           BoardRenderer
 import           GameBoard
-import           KeyListener
 import           GameLogic
-import           Graphics.Gloss 
+import           Graphics.Gloss  ()
+import           KeyListener
 import           Test.HUnit
 import           Test.QuickCheck
 

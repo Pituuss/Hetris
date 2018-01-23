@@ -13,18 +13,19 @@ module GameBoard
   , rowsToBoard
   ) where
 
-import           Blocks
+import           Blocks         ()
 import           Graphics.Gloss
 
 data Cell
   = Empty
   | FilledWith Color
   deriving (Show, Eq)
-
+-- | Grid row definition
 data Row =
   RowOfCells [Cell]
   deriving (Show)
 
+-- | Grid definition
 data Board =
   BoardOfRows [Row]
   deriving (Show)

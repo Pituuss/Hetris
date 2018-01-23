@@ -15,13 +15,12 @@ import           Graphics.Gloss
 
 -- | data representing abstract 2D block
 data Block =
-  BlockCoords [(Float, Float)] -- ^ blocks coordinates
-              Color --  ^ blocks color
+  BlockCoords [(Float, Float)] Color -- ^ blocks coordinates and blocks color
   deriving (Show)
 
 -- | function returning blocks color
 blockColor :: Block -> Color
-blockColor (BlockCoords _ color) = color
+blockColor (BlockCoords _ cl) = cl
 
 -- | function returning blocks coordinates
 blockCords :: Block -> [(Float, Float)]
@@ -35,12 +34,12 @@ blockHasCoord coords (BlockCoords coords' _) = coords `elem` coords'
 newBlock :: Double -> Block
 newBlock r =
   case truncate (r * 1000) `mod` 6 of
-    0 -> BlockCoords [(0, 0), (0, 1), (-1, 0), (-1, 1)] (light blue)
-    1 -> BlockCoords [(0, 0), (1, 0), (0, 1), (0, -1)] (light yellow)
-    2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] orange
-    3 -> BlockCoords [(0, 0), (1, 0), (0, -1), (-1, -1)] (light green)
-    4 -> BlockCoords [(0, 0), (0, 1), (1, 0), (-1, 0)] (light red)
-    5 -> BlockCoords [(0, 0), (0, -1), (-1, 0), (1, -1)] (light cyan)
+    0 -> BlockCoords [(0, 0), (0, 1), (-1, 0), (-1, 1)] (dim blue)
+    1 -> BlockCoords [(0, 0), (1, 0), (0, 1), (0, -1)] (dark yellow)
+    2 -> BlockCoords [(0, 0), (1, 0), (2, 0), (-1, 0)] (dim orange)
+    3 -> BlockCoords [(0, 0), (1, 0), (0, -1), (-1, -1)] (dim green)
+    4 -> BlockCoords [(0, 0), (0, 1), (1, 0), (-1, 0)] (dim red)
+    5 -> BlockCoords [(0, 0), (0, -1), (-1, 0), (1, -1)] (dark (dim cyan))
 
 -- | clockwise block rotation
 rotateBlockCW :: Block -> Block

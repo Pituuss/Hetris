@@ -3,6 +3,7 @@ Module : State
 |-}
 module State
   ( initialGameState
+  , gameOverState
   , State(..)
   ) where
 
@@ -20,7 +21,7 @@ data State = State
   , block          :: Block -- ^ current block we use
   , blockPos       :: (Float, Float) -- ^ current blocks position
   , randSeed       :: StdGen -- ^ random seed
-  , change         :: Bool
+  , gameOver       :: Bool -- ^ Have you already lost ?
   } deriving (Show)
 
 -- | initial state of the game
@@ -35,5 +36,20 @@ initialGameState =
   , blockPos = (5, 0)
   , block = newBlock 1
   , randSeed = mkStdGen 0
-  , change = True
+  , gameOver = False
+  }
+
+-- | if you lose you get this state
+gameOverState :: State
+gameOverState =
+  State
+  { score = 666
+  , time = 0
+  , dTime = 0
+  , timeToNextMove = 666
+  , gameBoard = emptyBoard
+  , blockPos = (0,0)
+  , block = newBlock 1
+  , randSeed = mkStdGen 0
+  , gameOver = True
   }

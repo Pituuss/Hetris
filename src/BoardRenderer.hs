@@ -22,7 +22,7 @@ cellSize = 32
 
 -- | wall color
 wallColor :: Color
-wallColor = dark red
+wallColor = greyN 0.3
 
 -- | board width
 boardWidth :: Float
@@ -96,13 +96,17 @@ renderBlock block (x, y) board = BoardOfRows $ map renderRow $ numberRows board
 
 -- | turning whole state to the picture
 render :: State -> Picture
-render state = pictures [walls, currentBoard, activeBlock,playerScore]
-  where
-    walls = renderWall
-    currentBoard = renderBoard $ gameBoard state
-    activeBlock =
-      renderBoard $ renderBlock (block state) (blockPos state) (gameBoard state)
-    playerScore = translate 200.0 200.0 (scale 0.2 0.2 (pictures [playerScoreText]))
-      where
-        playerScoreText = color white (Text scoreText)
-        scoreText = "SCORE: " ++ show (score state)
+render state
+  | gameOver state =  pictures [walls, currentBoard, gameOverMessage, gameOverScore]
+  | otherwise = pictures [walls, currentBoard, activeBlock,playerScore]
+    where
+      walls = renderWall
+      currentBoard = renderBoard $ gameBoard state
+      activeBlock =
+        renderBoard $ renderBlock (block state) (blockPos state) (gameBoard state)
+      gameOverMessage =translate (-200.0) 50.0 $ scale 0.5 0.5 (pictures [color (light rose) (Text "You Lost")])
+      gameOverScore = translate (-250.0) (-50.0) $ scale 0.5 0.5 (pictures [color (light rose) (Text ("Your socre: " ++ show(score state)))])
+      playerScore = translate 200.0 200.0 (scale 0.2 0.2 (pictures [playerScoreText]))
+        where
+          playerScoreText = color white (Text scoreText)
+          scoreText = "SCORE: " ++ show (score state)
